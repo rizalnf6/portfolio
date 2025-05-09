@@ -1,11 +1,35 @@
----
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page - Full Black</title>
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
----
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@700&family=Gentium+Basic&display=swap" rel="stylesheet" />
 
-<Layout>
-	<Welcome />
-</Layout>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background-color: #000000;
+      color: white;
+      font-family: 'Gentium Basic', serif;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Chivo', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center text-center px-6">
+  <h1 class="text-4xl md:text-6xl mb-4">Selamat Datang</h1>
+  <p class="text-lg md:text-xl max-w-2xl mb-6">
+    Ini adalah landing page dengan latar hitam pekat dan kombinasi font Chivo untuk heading dan Gentium Basic untuk teks umum.
+  </p>
+  <a href="#"
+     class="mt-4 inline-block bg-white text-black font-bold py-3 px-6 rounded-full transition duration-300 hover:bg-gray-300">
+    Mulai Sekarang
+  </a>
+</body>
+</html>
