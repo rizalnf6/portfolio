@@ -2,9 +2,25 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { projects } from '../data/projects.js';
+import { getCollection } from 'astro:content';
 
 // Get only featured projects
 const featuredProjects = projects.filter(project => project.featured);
+
+// Get recent blog posts
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2); // Get latest 2 posts
+
+// Format date function
+function formatDate(date: string | number | Date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric'
+  });
+}
 ---
 
 <BaseLayout title="Rizal Farhan - Portfolio">
@@ -77,6 +93,42 @@ const featuredProjects = projects.filter(project => project.featured);
         <a href="/project" class="text-indigo-600 font-semibold hover:underline">View all projects →</a>
       </div>
     </section>
+
+      <!-- Blog Preview Section -->
+  <section class="mb-24">
+    <h2 class="text-3xl font-bold mb-6">Recent Articles</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {recentPosts.map((post) => (
+        <article class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+          {post.data.image && (
+            <a href={`/blog/${post.slug}`}>
+              <img 
+                src={post.data.image} 
+                alt={post.data.title} 
+                class="w-full h-48 object-cover rounded-md mb-4"
+                onerror="this.src='/images/placeholder.jpg';"
+              />
+            </a>
+          )}
+          <div class="text-gray-500 text-sm mb-2">
+            {formatDate(post.data.pubDate)}
+          </div>
+          <h3 class="text-xl font-semibold mb-2">
+            <a href={`/blog/${post.slug}`} class="hover:text-indigo-600 transition-colors">
+              {post.data.title}
+            </a>
+          </h3>
+          <p class="text-gray-600 mb-4">{post.data.description}</p>
+          <a href={`/blog/${post.slug}`} class="text-indigo-600 font-semibold hover:underline">
+            Read more →
+          </a>
+        </article>
+      ))}
+    </div>
+    <div class="mt-8 text-center">
+      <a href="/blog" class="text-indigo-600 font-semibold hover:underline">View all articles →</a>
+    </div>
+  </section>
 
     <!-- Contact CTA -->
     <section class="bg-gray-50 p-12 rounded-lg text-center">

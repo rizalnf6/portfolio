@@ -20,6 +20,7 @@
           <li><a href="/" class="hover:text-indigo-600 transition-colors">Home</a></li>
           <li><a href="/about" class="hover:text-indigo-600 transition-colors">About</a></li>
           <li><a href="/project" class="hover:text-indigo-600 transition-colors">Projects</a></li>
+          <li><a href="/blog" class="hover:text-indigo-600 transition-colors">Blog</a></li>
           <li><a href="#contact" class="hover:text-indigo-600 transition-colors">Contact</a></li>
         </ul>
       </div>
@@ -29,6 +30,7 @@
         <li class="block px-4 py-2 hover:bg-gray-100"><a href="/">Home</a></li>
         <li class="block px-4 py-2 hover:bg-gray-100"><a href="/about">About</a></li>
         <li class="block px-4 py-2 hover:bg-gray-100"><a href="/project">Projects</a></li>
+        <li class="block px-4 py-2 hover:bg-gray-100"><a href="/blog">Blog</a></li>
         <li class="block px-4 py-2 hover:bg-gray-100"><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -37,8 +39,8 @@
   <script>
     // Simple mobile menu toggle
     document.addEventListener('DOMContentLoaded', () => {
-      const menuToggle = document.getElementById('menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
+      const menuToggle = document.getElementById('menu-toggle')!;
+      const mobileMenu = document.getElementById('mobile-menu')!;
       
       menuToggle.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
@@ -46,7 +48,7 @@
       
       // Close mobile menu when clicking outside
       document.addEventListener('click', (event) => {
-        if (!menuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+        if (!menuToggle.contains(event.target as Node) && !mobileMenu.contains(event.target as Node)) {
           mobileMenu.classList.add('hidden');
         }
       });

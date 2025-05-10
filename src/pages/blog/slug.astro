@@ -1,0 +1,76 @@
+
+---
+// src/pages/blog/[slug].astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Generate paths for all blog posts
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+// Get the blog post data
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Format date function
+function formatDate(date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+---
+
+<BaseLayout title={`${entry.data.title} | Your Name`}>
+  <main class="container mx-auto px-4 py-16 max-w-3xl">
+    <a href="/blog" class="text-indigo-600 mb-8 inline-block hover:underline">← Back to Blog</a>
+    
+    <article>
+      {entry.data.image && (
+        <img 
+          src={entry.data.image} 
+          alt={entry.data.title} 
+          class="w-full h-72 object-cover rounded-lg mb-8"
+          onerror="this.src='/images/placeholder.jpg';"
+        />
+      )}
+      
+      <div class="text-gray-500 text-sm mb-2">
+        {formatDate(entry.data.pubDate)}
+        {entry.data.updatedDate && ` • Updated on ${formatDate(entry.data.updatedDate)}`}
+      </div>
+      
+      <h1 class="text-4xl font-bold mb-4">{entry.data.title}</h1>
+      
+      <div class="flex flex-wrap gap-2 mb-8">
+        {entry.data.tags.map((tag) => (
+          <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm">{tag}</span>
+        ))}
+      </div>
+      
+      <div class="prose max-w-none">
+        <Content />
+      </div>
+      
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-medium">Written by</h3>
+            <p class="text-gray-700">{entry.data.author}</p>
+          </div>
+          <div>
+            <button class="text-indigo-600 hover:text-indigo-800 transition-colors">
+              Share this post
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+</BaseLayout>
