@@ -1,13 +1,26 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import '../assets/global.css';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import PageTransition from '../components/PageTransition.astro';
+import '../styles/global.css';
 
 export interface Props {
   title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
 }
 
-const { title } = Astro.props;
+const { 
+  title, 
+  description = "Personal portfolio and blog focused on UI/UX design and web development.",
+  image = "/images/placeholder.png", // Default social image
+  type = "website" 
+} = Astro.props;
+
+// Get the pathname without relying on Astro.site
+const pathname = Astro.url.pathname;
 ---
 
 <!DOCTYPE html>
@@ -17,17 +30,55 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
-    <!-- If you want to use Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- If you want to use a Google Font -->
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Initialize theme early to prevent flash (only keep this one script) -->
+    <script is:inline>
+      // Check for saved theme preference or use device preference
+      const userTheme = localStorage.getItem('theme');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      
+      // Set theme based on preference
+      if (userTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else if (userTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else if (systemTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
-  <body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col">
+  <body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col dark:bg-gray-900 dark:text-white">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-primary-600 focus:text-white focus:z-50">
+      Skip to content
+    </a>
+    <PageTransition />
     <Header />
-    <slot />
+    <main id="main-content">
+      <slot />
+    </main>
     <Footer />
+    <ScrollReveal />
   </body>
 </html>

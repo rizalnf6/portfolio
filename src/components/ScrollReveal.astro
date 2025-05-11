@@ -1,0 +1,41 @@
+---
+// src/components/ScrollReveal.astro
+---
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      
+      const revealElements = document.querySelectorAll('.reveal');
+      revealElements.forEach(element => {
+        element.classList.add('reveal-hidden');
+        observer.observe(element);
+      });
+    });
+  </script>
+  
+  <style>
+    .reveal-hidden {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .reveal-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>

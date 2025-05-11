@@ -4,7 +4,7 @@ title: "Getting Started with Astro"
 description: "Learn how to build lightning-fast websites with Astro's innovative multi-page approach."
 pubDate: 2023-11-15
 author: "Your Name"
-image: "/images/blog/astro-intro.jpg"
+image: "/images/blog/placeholder.png"
 tags: ["Astro", "Web Development", "JavaScript"]
 ---
 

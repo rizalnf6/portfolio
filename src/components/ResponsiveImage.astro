@@ -1,0 +1,16 @@
+---
+// src/components/ResponsiveImage.astro
+export interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  sizes?: string;
+}
+
+const { src, alt, class: className = '', sizes = '100vw' } = Astro.props;
+---
+
+<picture>
+  <source srcset={`${src}?w=400 400w, ${src}?w=800 800w, ${src}?w=1200 1200w`} sizes={sizes} />
+  <img src={`${src}?w=800`} alt={alt} class={className} loading="lazy" />
+</picture>
